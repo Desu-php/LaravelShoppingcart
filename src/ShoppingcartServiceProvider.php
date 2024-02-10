@@ -15,7 +15,7 @@ class ShoppingcartServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->bind('cart', 'Gloudemans\Shoppingcart\Cart');
+        $this->app->bind('shoppingcart', 'Gloudemans\Shoppingcart\Cart');
 
         $config = __DIR__.'/Config/cart.php';
         $this->mergeConfigFrom($config, 'cart');
