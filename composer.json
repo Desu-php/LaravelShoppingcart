@@ -46,7 +46,7 @@
                 "Gloudemans\\Shoppingcart\\ShoppingcartServiceProvider"
             ],
             "aliases": {
-                "Cart": "Gloudemans\\Shoppingcart\\Facades\\Cart"
+                "ShoppingCart": "Gloudemans\\Shoppingcart\\Facades\\Cart"
             }
         }
     }
