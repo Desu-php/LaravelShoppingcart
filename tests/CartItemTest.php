@@ -8,6 +8,20 @@ use Orchestra\Testbench\TestCase;
 
 class CartItemTest extends TestCase
 {
+    public function test_non_numeric_price_is_rejected_without_a_php_type_error()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Please supply a valid price.');
+        new CartItem(1, 'Product', []);
+    }
+
+    public function test_null_weight_is_rejected_without_a_php_deprecation()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Please supply a valid weight.');
+        new CartItem(1, 'Product', 10, null);
+    }
+
     /**
      * Set the package service provider.
      *
@@ -20,8 +34,7 @@ class CartItemTest extends TestCase
         return [ShoppingcartServiceProvider::class];
     }
 
-    /** @test */
-    public function it_can_be_cast_to_an_array()
+    public function test_it_can_be_cast_to_an_array()
     {
         $cartItem = new CartItem(1, 'Some item', 10.00, 550, ['size' => 'XL', 'color' => 'red']);
         $cartItem->setQuantity(2);
@@ -43,8 +56,7 @@ class CartItemTest extends TestCase
         ], $cartItem->toArray());
     }
 
-    /** @test */
-    public function it_can_be_cast_to_json()
+    public function test_it_can_be_cast_to_json()
     {
         $cartItem = new CartItem(1, 'Some item', 10.00, 550, ['size' => 'XL', 'color' => 'red']);
         $cartItem->setQuantity(2);
@@ -56,8 +68,7 @@ class CartItemTest extends TestCase
         $this->assertEquals($json, $cartItem->toJson());
     }
 
-    /** @test */
-    public function it_formats_price_total_correctly()
+    public function test_it_formats_price_total_correctly()
     {
         $cartItem = new CartItem(1, 'Some item', 10.00, 550, ['size' => 'XL', 'color' => 'red']);
         $cartItem->setQuantity(2);

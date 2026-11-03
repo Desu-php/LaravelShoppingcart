@@ -1,3 +1,5 @@
+> Historical upstream translation. For this fork, installation, current compatibility and upgrade instructions, use [README.md](README.md). Package: `desu-php/shoppingcart`; discovered facade: `ShoppingCart`.
+
 ## LaravelShoppingcart
 ![CI Code Checks](https://github.com/bumbummen99/LaravelShoppingcart/workflows/CI%20Code%20Checks/badge.svg?branch=master)
 [![codecov](https://codecov.io/gh/bumbummen99/LaravelShoppingcart/branch/master/graph/badge.svg)](https://codecov.io/gh/bumbummen99/LaravelShoppingcart)
