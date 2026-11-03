@@ -1,4 +1,4 @@
-# Upgrading to the proposed 5.0.0
+# Upgrading to 5.0.0
 
 ## PHP requirement (packaging breaking change)
 

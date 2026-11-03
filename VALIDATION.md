@@ -1,9 +1,10 @@
 # Validation — 2026-11-03
 
 Base source: `d601f3022ba01fb3c7e63f06923585d7d521dfc4` from
-`https://github.com/Desu-php/LaravelShoppingcart`. Changes are pushed on
-`maintenance/laravel-11-13` in [PR #1](https://github.com/Desu-php/LaravelShoppingcart/pull/1).
-No tag, release, merge or Packagist update has been performed.
+`https://github.com/Desu-php/LaravelShoppingcart`. The compatibility changes were merged through
+[PR #1](https://github.com/Desu-php/LaravelShoppingcart/pull/1). Release 5.0.0 uses
+the same tested runtime source; final release preparation updates documentation
+and prevents automatic contributor-list rewrites.
 
 ## GitHub Actions results — 2026-11-03
 
@@ -126,7 +127,7 @@ added to composer.json or application installation instructions.
   the tag is authorized and indexed.
 
 The source, release documentation and recorded hosted CI are prepared.
-Release approval, tagging and publication remain separate steps. Proposed version: **5.0.0**;
+The maintainer authorized stable release **5.0.0** on 2026-11-03;
 the newly explicit PHP >=7.0 metadata floor is treated as a packaging breaking
 change; Laravel 10 API/data behavior is preserved.
 

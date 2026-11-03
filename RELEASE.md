@@ -1,13 +1,13 @@
-# Proposed stable release: 5.0.0
+# Release 5.0.0 — 2026-11-03
 
-This change prepares source code and release notes. No tag, GitHub release or
-Packagist operation has been performed. Hosted compatibility results are in
-VALIDATION.md. Require successful checks on the final release commit before
-approving a release.
+This release uses the immutable Git tag `v5.0.0`. Composer derives the version
+from that tag; no `version` field belongs in composer.json. Hosted compatibility
+results are recorded in VALIDATION.md. Packagist indexing is verified separately
+after the tag is pushed and the repository is registered.
 
 ## Version rationale
 
-The inspected fork has no tags (local and remote tag lists are empty). Its
+Before this release the inspected fork had no tags (local and remote tag lists were empty). Its
 documentation/code inherit upstream's 4.2.0 lineage. Use **5.0.0** as the first
 stable tag in this fork, rather than inventing a previous fork release.
 
@@ -19,7 +19,7 @@ narrows installable PHP versions, so a conservative SemVer major is appropriate.
 Older Laravel ranges remain available on compatible PHP versions. Runtime API,
 calculations and storage formats are preserved. No `version` field is added.
 
-## Release notes draft
+## Release notes
 
 desu-php/shoppingcart 5.0.0 adds Laravel 11, 12 and 13 with Carbon 3 support,
 preserving Laravel 10, existing older dependency ranges, the Gloudemans API,
@@ -36,7 +36,7 @@ meet that floor. The public API and persisted formats are unchanged. Laravel 12/
 framework requires it. No cart data reset is required from this fork's current
 master. Consult UPGRADING.md and VALIDATION.md before updating an application.
 
-## Maintainer procedure (commands to run later, not executed by this change)
+## Maintainer procedure for stable releases
 
 1. Review the diff from d601f302, validation evidence and dependency advisories.
    Push the reviewed branch / merge it using the repository's normal process.

@@ -1,6 +1,6 @@
 # Changelog
 
-## [Unreleased] — proposed 5.0.0
+## [5.0.0] — 2026-11-03
 
 ### Added
 
@@ -11,6 +11,8 @@
   instance isolation, event order and payloads, PHP session persistence, original
   serialized data, mutable Carbon timestamps/timezone and publishing/migrations.
 - Package metadata, upgrade instructions, validation report and release procedure.
+- Preserved upstream acknowledgements; contributor-list updates are now manually
+  dispatched so automated commits cannot overwrite release documentation.
 
 ### Fixed
 
@@ -40,9 +42,9 @@ See [VALIDATION.md](VALIDATION.md) for tested combinations and limits.
 ## Historical baseline
 
 The fork's baseline is `d601f3022ba01fb3c7e63f06923585d7d521dfc4` (master at
-inspection). It has no Git tags: both `git tag -l` and `git ls-remote --tags origin`
-were empty. There is therefore no previous stable **fork** release to invent.
+inspection). Before this release it had no Git tags: both `git tag -l` and
+`git ls-remote --tags origin` were empty during the baseline audit. There is therefore no previous stable **fork** release to invent.
 
 The inherited README identifies upstream 4.2.0's PostgreSQL base64 storage change.
-The 5.0.0 proposal deliberately continues that documented lineage. Upstream version
+Version 5.0.0 deliberately continues that documented lineage. Upstream version
 numbers must not be mistaken for tags published by this fork.

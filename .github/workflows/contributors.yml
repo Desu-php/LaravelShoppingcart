@@ -1,7 +1,6 @@
+# Manually review generated contributor changes so inherited credits are preserved.
 on:
-  push:
-    branches:
-    - master
+  workflow_dispatch:
 
 jobs:
     contrib-readme-job:
