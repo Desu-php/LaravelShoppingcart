@@ -1,8 +1,9 @@
 # Proposed stable release: 5.0.0
 
 This change prepares source code and release notes. No tag, GitHub release or
-Packagist operation has been performed. The new CI has to run on GitHub before
-the release is approved.
+Packagist operation has been performed. Hosted compatibility results are in
+VALIDATION.md. Require successful checks on the final release commit before
+approving a release.
 
 ## Version rationale
 
