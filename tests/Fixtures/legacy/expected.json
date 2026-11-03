@@ -1,0 +1,26 @@
+{
+    "source_commit": "d601f3022ba01fb3c7e63f06923585d7d521dfc4",
+    "laravel": "v10.50.4",
+    "carbon": "2.73.0",
+    "item": {
+        "rowId": "4fc73b8dba588608c5ed9cb99f808a40",
+        "id": "sku-legacy",
+        "name": "Товар XL",
+        "qty": 2,
+        "price": 19.995,
+        "weight": 550,
+        "options": {
+            "size": "XL",
+            "color": "red",
+            "nested": {
+                "gift": true
+            }
+        },
+        "discount": 1.9995000000000003,
+        "tax": 3.78,
+        "subtotal": 35.99
+    },
+    "total": "43.55",
+    "taxTotal": 7.56,
+    "discountTotal": 4
+}

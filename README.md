@@ -1,39 +1,184 @@
-# Attention
-Due to the difficulty experienced by certain individuals and companies in comprehending the [copyleft provision of the MIT license](https://github.com/bumbummen99/LaravelShoppingcart/blob/1c50fb564826b6ee748d2d9afad7447b6884166e/LICENSE#L12), as evidenced by the unauthorized relicensing of my work and that of others, I have opted to terminate all further development and assistance for this repository. Given that this package is intended for use in e-commerce projects, it is expected that the necessary resources would be available for the development and support of your own solutions.
+# desu-php/shoppingcart
 
+[![Package compatibility](https://github.com/Desu-php/LaravelShoppingcart/actions/workflows/php.yml/badge.svg)](https://github.com/Desu-php/LaravelShoppingcart/actions/workflows/php.yml)
 
-## LaravelShoppingcart
-![CI Code Checks](https://github.com/bumbummen99/LaravelShoppingcart/workflows/CI%20Code%20Checks/badge.svg?branch=master)
-[![codecov](https://codecov.io/gh/bumbummen99/LaravelShoppingcart/branch/master/graph/badge.svg)](https://codecov.io/gh/bumbummen99/LaravelShoppingcart)
-[![StyleCI](https://styleci.io/repos/152610878/shield?branch=master)](https://styleci.io/repos/152610878)
-[![Total Downloads](https://poser.pugx.org/bumbummen99/shoppingcart/downloads.png)](https://packagist.org/packages/bumbummen99/shoppingcart)
-[![Latest Stable Version](https://poser.pugx.org/bumbummen99/shoppingcart/v/stable)](https://packagist.org/packages/bumbummen99/shoppingcart)
-[![Latest Unstable Version](https://poser.pugx.org/bumbummen99/shoppingcart/v/unstable)](https://packagist.org/packages/bumbummen99/shoppingcart)
-[![License](https://poser.pugx.org/bumbummen99/shoppingcart/license)](https://packagist.org/packages/bumbummen99/shoppingcart)
+Session-based shopping carts with multiple instances, Buyable products, per-row
+taxes and discounts, configurable calculators, events, and optional database storage.
 
-This is a fork of [Crinsane's LaravelShoppingcart](https://github.com/Crinsane/LaravelShoppingcart) extended with minor features compatible with Laravel 8+. An example integration can be [found here](https://github.com/bumbummen99/LaravelShoppingcartDemo).
+This fork preserves `Gloudemans\Shoppingcart`, the contracts and calculation/storage
+behavior inherited from [bumbummen99/shoppingcart](https://github.com/bumbummen99/LaravelShoppingcart),
+which extends [Rob Gloudemans' original package](https://github.com/Crinsane/LaravelShoppingcart).
+Its existing differences are the Composer name `desu-php/shoppingcart`, container
+binding `shoppingcart`, auto-discovered alias `ShoppingCart`, and Laravel 10 support.
+This maintenance update adds Laravel 11–13 and Carbon 3 coverage without replacing
+the implementation. The MIT license, authors and contributor credits are retained.
+
+## Compatibility
+
+The proposed stable version is **5.0.0** (not yet published by this change).
+
+| Laravel | Framework PHP requirement | Carbon | Package version | Testbench / PHPUnit in CI |
+| --- | --- | --- | --- | --- |
+| 10 | 8.1+ | 2 (`^2.67`) | planned 5.x; previous fork master | 8 / 10 |
+| 11 | 8.2+ | 2 (`^2.72.6`) or 3 (`^3.8.4`) | planned 5.x | 9 / 11 |
+| 12 | 8.2+ | 3 (`^3.8.4`) | planned 5.x | 10 / 11 |
+| 13 | 8.3+ | 3 (`^3.8.4`) | planned 5.x | 11 / 11 |
+| 8 / 9 | 7.3+ / 8.0.2+ | 2 | retained in planned 5.x | 6 / 9 and 7 / 9 |
+| 5.4–7 | historical framework requirements | 1 or 2 as allowed by Laravel | inherited constraints retained | not covered by this CI |
+
+The package keeps historical Laravel dependency ranges. Version 5.0.0 treats
+the newly explicit PHP >=7.0 floor as a packaging breaking change: PHP 5.6 could
+previously resolve dependencies but cannot use the existing scalar declarations. `php >=7.0` describes the existing source syntax
+floor (scalar type declarations); tests require PHP 7.1 or newer. Older Laravel
+ranges and Carbon 1 are retained for existing consumers, but Laravel 5.4–7 and
+Carbon 1 are **not newly certified**. Use the runtime requirements of your chosen
+Laravel release. A Composer resolution alone is not a behavioral compatibility test.
+
+CI explicitly selects Laravel, Testbench, PHPUnit and Carbon in each job. It runs
+Laravel 10 on PHP 8.1/8.3, Laravel 11 on PHP 8.2 with both Carbon majors and PHP 8.4
+with Carbon 3, Laravel 12 on PHP 8.2/8.4, and Laravel 13 on PHP 8.3/8.4/8.5.
+See [VALIDATION.md](VALIDATION.md) for actual local results and limitations.
+
+Framework requirements: [Laravel 10](https://github.com/laravel/framework/blob/10.x/composer.json),
+[11](https://github.com/laravel/framework/blob/11.x/composer.json),
+[12](https://github.com/laravel/framework/blob/12.x/composer.json),
+[13](https://github.com/laravel/framework/blob/13.x/composer.json).
+Laravel 12 [removed Carbon 2 support](https://laravel.com/docs/12.x/upgrade#carbon-3).
+The package calls only `Carbon::now()` and `Carbon::parse()` in DB persistence;
+these still return mutable Carbon instances. It does not use changed `diffIn*`
+return values, timestamp factory defaults or removed Carbon APIs.
 
 ## Installation
 
-Install the [package](https://packagist.org/packages/bumbummen99/shoppingcart) through [Composer](http://getcomposer.org/). 
+After 5.0.0 has been tagged and indexed on Packagist:
 
-Run the Composer require command from the Terminal:
+```sh
+composer require desu-php/shoppingcart:^5.0
+```
 
-    composer require bumbummen99/shoppingcart
+Laravel discovers `Gloudemans\Shoppingcart\ShoppingcartServiceProvider` and the
+global `ShoppingCart` alias. The namespaced facade remains
+`Gloudemans\Shoppingcart\Facades\Cart`. Existing applications importing it as
+`Cart` continue to work; a global alias named `Cart` is not registered by this fork.
+The container binding remains `shoppingcart`. `Cart` can also be injected by class.
+If auto-discovery is disabled, register the provider using your Laravel version's
+normal provider configuration.
 
-Now you're ready to start using the shoppingcart in your application.
+## Quick start
 
-**As of version 2 of this package it's possibly to use dependency injection to inject an instance of the Cart class into your controller or other class**
+All `Cart::` examples below assume this import:
 
-You definitely should publish the `config` file and take a look at it.
+```php
+use Gloudemans\Shoppingcart\Facades\Cart;
 
-    php artisan vendor:publish --provider="Gloudemans\Shoppingcart\ShoppingcartServiceProvider" --tag="config"
+$item = Cart::add('sku-1', 'Product', 2, 19.95, 550, ['size' => 'XL']);
+Cart::update($item->rowId, 3);
+$item = Cart::update($item->rowId, ['qty' => 2, 'options' => ['size' => 'L']]);
 
-This will give you a `cart.php` config file in which you can make changes to the packages behaivor.
+echo Cart::subtotal(); // formatted string, after discounts, before tax
+echo Cart::tax();
+echo Cart::total();
 
-## Updates
+Cart::instance('wishlist')->add('sku-2', 'Saved product', 1, 9.99);
+Cart::instance('default')->remove($item->rowId);
+Cart::destroy(); // clears only the selected instance
+```
 
-As of version **4.2.0** this package does, when being used with PostgreSQL, encode the cart content to base64 before storing into database due to an [issue with saving values including zero bytes](https://github.com/bumbummen99/LaravelShoppingcart/pull/167). Please consider clearing your cart table in case you are upgrading using PostgreSQL from a version **<4.2.0**.
+Options are the sixth argument when adding attributes; weight is fifth. The
+Buyable overload is `Cart::add($product, $quantity, $options)`. A Buyable must
+implement the existing four methods of `Gloudemans\Shoppingcart\Contracts\Buyable`,
+including `getBuyableWeight($options = null)`; see the reference below.
+Keep the row ID returned by `update()` when options change. Identical IDs and
+top-level sorted options merge into one row, using the existing MD5/serialize rule.
+
+## Configuration, sessions and database storage
+
+```sh
+php artisan vendor:publish --provider="Gloudemans\Shoppingcart\ShoppingcartServiceProvider" --tag=config
+```
+
+Edit `config/cart.php` in your application: `tax` (default 21), `calculator`
+(`DefaultCalculator` or `GrossPrice`), `format`, `destroy_on_logout`, and
+`database.connection` / `database.table`. Defaults are merged by the provider;
+no changes inside `vendor` are required. The existing `config` and `migrations`
+publish tags are preserved. Published application settings override defaults.
+
+The cart uses Laravel's session manager under `cart.<instance>`. Routes need
+session middleware (normally the `web` group). Keep PHP session serialization:
+objects are stored as `Collection` / `CartItem` / `CartItemOptions`; a custom JSON
+session serializer cannot preserve this object format. Across upgrades retain
+the app key, session driver, cookie name and backing storage. Laravel 13 changed
+some generated cookie/cache prefix defaults; explicitly preserve existing values
+when applicable. See the [Laravel 13 upgrade guide](https://laravel.com/docs/13.x/upgrade).
+
+Database storage is optional. Laravel applications already include
+`illuminate/database`; component-only consumers must install its matching major
+and configure a connection before using persistence or Eloquent associations.
+
+```sh
+php artisan vendor:publish --provider="Gloudemans\Shoppingcart\ShoppingcartServiceProvider" --tag=migrations
+php artisan migrate
+```
+
+```php
+Cart::instance('default')->store('customer-123');
+Cart::destroy();
+Cart::restore('customer-123'); // restores into current instance and deletes stored row
+Cart::store('customer-123');
+Cart::instance('wishlist')->merge('customer-123'); // stored row remains
+Cart::instance('default')->erase('customer-123');
+```
+
+`store()` refuses an existing `(identifier, instance)` key. `restore()` replaces
+matching row IDs and preserves other current rows; it does not add quantities for
+matching rows. `merge()` adds quantities and optionally keeps discounts/tax rates.
+The table keeps PHP-serialized collections, base64-encoded on PostgreSQL as in
+the inherited 4.2.0 implementation. No cart table migration or data reset is
+required from the current fork. Do not change namespaces/property names or edit
+serialized data. Datetimes are stored using the application's timezone and the
+connection's date format, with existing second-level precision.
+
+## Updating and releasing
+
+See [UPGRADING.md](UPGRADING.md) for moving from `dev-master`, existing cart data,
+and older upstream versions. See [CHANGELOG.md](CHANGELOG.md) and
+[RELEASE.md](RELEASE.md) for the proposed release notes and exact Packagist steps.
+These files prepare a release; they do not publish one.
+
+## Running tests
+
+```sh
+composer install
+composer validate --strict
+composer test
+```
+
+PHP extensions include `mbstring`, `dom` and `pdo_sqlite`. To reproduce one matrix
+combination in a clean checkout (no committed lock file for this library):
+
+```sh
+composer require --dev --no-update "laravel/framework:^11.0" "orchestra/testbench:^9.0" "phpunit/phpunit:^11.5"
+composer require --no-update "nesbot/carbon:^2.72.6"
+composer update --prefer-dist
+composer test
+```
+
+Use another clean checkout for Carbon 3 or a different Laravel major. The suite
+preserves the original cases and adds provider discovery, publishing/migrations,
+event order/payload, session round trips, legacy object compatibility and frozen
+Carbon timestamp coverage. The rounding tests compare exact formatted amounts
+and integer minor units rather than associativity of binary float sums.
+
+`composer test` runs publication in a separate PHP process because the inherited
+migration uses a named class. To exercise PostgreSQL, configure a dedicated test
+database with `CART_PGSQL_HOST`, `CART_PGSQL_PORT`, `CART_PGSQL_DATABASE`,
+`CART_PGSQL_USERNAME` and `CART_PGSQL_PASSWORD`, install `pdo_pgsql`, then run
+`composer test:pgsql`. This explicit integration suite is also a required CI job.
+It creates and rolls back its `shoppingcart_test` table; use a test database.
+
+The EOL framework CI jobs allow resolving their old development fixtures and
+report their dependency advisories. This exception is confined to CI and does
+not change Composer security policy for consuming applications. See VALIDATION.md.
 
 ## Table of Contents
 Look at one of the following topics to learn more about LaravelShoppingcart
@@ -72,7 +217,7 @@ In its most basic form you can specify the id, name, quantity, price and weight 
 Cart::add('293ad', 'Product 1', 1, 9.99, 550);
 ```
 
-As an optional fifth parameter you can pass it options, so you can add multiple items with the same id, but with (for instance) a different size.
+As an optional sixth parameter you can pass it options, so you can add multiple items with the same id, but with (for instance) a different size.
 
 ```php
 Cart::add('293ad', 'Product 1', 1, 9.99, 550, ['size' => 'large']);
@@ -399,16 +544,16 @@ class Product extends Model implements Buyable {
 If the trait does not work for on the model or you wan't to map the fields manually the model has to implement the `Buyable` interface methods. To do so, it must implement such functions:
 
 ```php
-    public function getBuyableIdentifier(){
+    public function getBuyableIdentifier($options = null){
         return $this->id;
     }
-    public function getBuyableDescription(){
+    public function getBuyableDescription($options = null){
         return $this->name;
     }
-    public function getBuyablePrice(){
+    public function getBuyablePrice($options = null){
         return $this->price;
     }
-    public function getBuyableWeight(){
+    public function getBuyableWeight($options = null){
         return $this->weight;
     }
 ```
@@ -660,7 +805,7 @@ The Cart package will throw exceptions if something goes wrong. This way it's ea
 
 ## Events
 
-The cart also has events build in. There are five events available for you to listen for.
+The cart also has events build in. The following events are available for you to listen for.
 
 | Event         | Fired                                    | Parameter                             |
 | ------------- | ---------------------------------------- | ------------------------------------- |
@@ -683,7 +828,7 @@ Below is a little example of how to list the cart content in a table:
 
 // Add some items in your Controller.
 Cart::add('192ao12', 'Product 1', 1, 9.99);
-Cart::add('1239ad0', 'Product 2', 2, 5.95, ['size' => 'large']);
+Cart::add('1239ad0', 'Product 2', 2, 5.95, 0, ['size' => 'large']);
 
 // Display the content in a View.
 <table>

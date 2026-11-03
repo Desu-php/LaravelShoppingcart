@@ -19,7 +19,15 @@ class ShoppingcartServiceProvider extends ServiceProvider
 
         $config = __DIR__.'/Config/cart.php';
         $this->mergeConfigFrom($config, 'cart');
+    }
 
+    /**
+     * Bootstrap package services after application providers are registered.
+     *
+     * @return void
+     */
+    public function boot()
+    {
         $this->publishes([__DIR__.'/Config/cart.php' => config_path('cart.php')], 'config');
 
         $this->app['events']->listen(Logout::class, function () {
